@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 
 from db.db_setup import engine
-from db.models import user
-from api import users
+from db.models import product
+from api import products
 
 # bind all the models to the engine
-user.Base.metadata.create_all(bind=engine) 
+product.Base.metadata.create_all(bind=engine) 
 
 app = FastAPI(
-    title="Backend Task Forsit",
+    title="Backend Task FORSIT",
     description="Sample e-commerce application",
     version="0.0.1",
     contact={
@@ -21,4 +21,4 @@ app = FastAPI(
     },
 )
 
-app.include_router(users.router)
+app.include_router(products.router)
