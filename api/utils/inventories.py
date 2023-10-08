@@ -1,11 +1,12 @@
 import random
 from datetime import datetime
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 
 from db.models.inventory import Inventory
 from pydantic_schemas.inventory import InventoryCreate
 from pydantic_schemas.product import Product
 from ..products import get_products
+from helper import generate_random_time
 
 
 
@@ -28,14 +29,6 @@ def generate_inventories(db:Session, product: Product, entries:int = 100):
     product.stock = sum(all_quantities)
     db.add(product)
     db.commit()
-
-
-
-def generate_random_time(start_date:datetime, end_date:datetime):
-    start = int(start_date.timestamp())
-    end = int(end_date.timestamp())
-    random_time = random.randint(start, end)
-    return datetime.fromtimestamp(random_time)
 
 
 
