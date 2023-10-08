@@ -30,4 +30,5 @@ class Product(Timestamp, Base):
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
     category = relationship("Category", back_populates="products")   
+    inventories = relationship("Inventory", back_populates="product")   
 

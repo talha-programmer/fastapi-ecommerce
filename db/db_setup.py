@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -6,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:password@localhost/sample_ecommerce"  
 
 
-# future=True for using async functionality
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, future=True
 )
