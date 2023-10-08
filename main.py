@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 
-from db.db_setup import engine
+from db.db_setup import engine, Base
 from db.models import product
 from api import products
 
 # bind all the models to the engine
-product.Base.metadata.create_all(bind=engine) 
+Base.metadata.create_all(bind=engine) 
+
 
 app = FastAPI(
     title="Backend Task FORSIT",
