@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from db.models.product import Category, Product
-from sqlalchemy.future import select
+from pydantic_schemas.product import ProductCreate
 
 
 
@@ -10,21 +10,36 @@ from sqlalchemy.future import select
 
 
 def get_product(db: Session, product_id: int):
-    query = select(Product).where(Product.id == product_id)
-    result =  db.execute(query)
-    return result.scalar_one_or_none()
+    return db.query(Product).filter(Product.id == product_id).first()
 
+
+def get_category(db: Session, category_id: int):
+    return db.query(Category).filter(Category.id == category_id).first()
 
 
 def get_products(db: Session, skip: int = 0, limit: int = 100):
-    query = select(Product).offset(skip).limit(limit)
-    result =  db.execute(query)
-    return result.all()
+    return db.query(Product).offset(skip).options(joinedload(Product.category)).limit(limit).all()
 
 
-# def create_user(db: Session, user: UserCreate):
-#     db_user = Product(email=user.email, role=user.role)
-#     db.add(db_user)
-#     db.commit()
-#     db.refresh(db_user)
-#     return db_user
+def get_categories(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(Category).offset(skip).limit(limit).all()
+
+
+def create_product(db: Session, product: ProductCreate):
+    db_product = Product(
+        title=product.title,
+        description=product.description,
+        discount_percentage=product.discount_percentage,
+        stock=product.stock,
+        price=product.price,
+        rating=product.rating,
+        brand=product.brand,
+        category_id=product.category_id
+    )
+
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+
+    return db_product 
+
