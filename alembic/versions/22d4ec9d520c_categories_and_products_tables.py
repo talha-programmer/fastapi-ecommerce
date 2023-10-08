@@ -46,7 +46,7 @@ def upgrade() -> None:
     sa.Column('title', mysql.VARCHAR(length=200), nullable=False),
     sa.Column('description', mysql.TEXT(), nullable=True),
     sa.Column('price', mysql.FLOAT(), nullable=False),
-    sa.Column('discount_percentage', mysql.FLOAT(), nullable=False),
+    sa.Column('discount_percentage', mysql.FLOAT(), nullable=False, default=0),
     sa.Column('rating', mysql.FLOAT(), nullable=False),
     sa.Column('stock', mysql.INTEGER(), autoincrement=False, nullable=False, default=0),
     sa.Column('brand', mysql.VARCHAR(length=100), nullable=False),

@@ -12,7 +12,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
 
-    products = relationship("Product", back_populates="owner")  
+    products = relationship("Product", back_populates="category")  
 
 
 class Product(Timestamp, Base):
@@ -22,7 +22,7 @@ class Product(Timestamp, Base):
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=True)
     price = Column(Float, nullable=False)
-    discount_percentage = Column(Float, nullable=False)
+    discount_percentage = Column(Float, nullable=False, default=0)
     rating = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False, default=0)
     brand = Column(String(100), nullable=False)
