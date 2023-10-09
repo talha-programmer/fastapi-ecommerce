@@ -4,19 +4,24 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class InventoryBase(BaseModel):
+class OrderBase(BaseModel):
     quantity: int
     product_id: int
 
 
-class InventoryCreate(InventoryBase):
+
+class OrderCreate(OrderBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+    discount_percentage: Optional[float] = None
 
 
 
-class Inventory(InventoryBase):
+class Order(OrderBase):
     id: int
+    price: float
+    discount_percentage: float
+    total_amount: float
     created_at: datetime
     updated_at: datetime
 
