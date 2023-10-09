@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from db.db_setup import engine, Base
 from db.models import product
-from api import products
+from api import products, orders
 
 # bind all the models to the engine
 Base.metadata.create_all(bind=engine) 
@@ -23,3 +23,4 @@ app = FastAPI(
 )
 
 app.include_router(products.router)
+app.include_router(orders.router)
