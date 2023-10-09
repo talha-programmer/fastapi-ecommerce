@@ -10,7 +10,7 @@ class Inventory(Base, Timestamp):
     __tablename__ = "inventories"
 
     id = Column(Integer, primary_key=True, unique=True)
-    quantity = Column(Integer)      # Positive for Increase in quantity, Negative for decrease
+    quantity = Column(Integer, nullable=False)      # Positive for Increase in quantity, Negative for decrease
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
 
     product = relationship("Product", back_populates="inventories")  
