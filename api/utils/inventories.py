@@ -25,22 +25,22 @@ def generate_inventories(db:Session, product: Product, entries:int = 100):
         all_quantities.append(quantity)
         update_time = generate_random_time(datetime(2020, 1, 1), datetime.now())
         inventory = InventoryCreate(quantity=quantity, product_id=product.id, created_at=update_time, updated_at=update_time)
-        create_inventory(db, inventory)
-    product.stock = sum(all_quantities)
-    db.add(product)
-    db.commit()
+        create_inventory(db, inventory, product)
 
 
 
-def create_inventory(db: Session, inventory: InventoryCreate):
+def create_inventory(db: Session, inventory: InventoryCreate, product: Product):
     db_inventory = Inventory(
         quantity=inventory.quantity,
         product_id=inventory.product_id,
         created_at = inventory.created_at,
         updated_at = inventory.updated_at
     )
-
     db.add(db_inventory)
+
+    product.stock = sum([product.stock, inventory.quantity])
+    db.add(product)
+
     db.commit()
     db.refresh(db_inventory)
 
