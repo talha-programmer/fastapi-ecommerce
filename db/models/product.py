@@ -4,6 +4,8 @@ from sqlalchemy.orm import relationship
 
 from ..db_setup import Base
 from .mixins import Timestamp
+from .inventory import Inventory
+from .order import Order
 
 
 class Category(Base):
