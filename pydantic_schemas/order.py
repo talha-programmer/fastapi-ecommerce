@@ -28,3 +28,5 @@ class Order(OrderBase):
     # This from_attributes must be provided for the pydantic to automatically detect the ORM. i.e. SQLAlchemy
     class Config:
         from_attributes = True
+
+

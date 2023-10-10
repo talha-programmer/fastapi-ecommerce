@@ -1,7 +1,9 @@
 import random
 from datetime import datetime
+import json
 
 from sqlalchemy.orm import Session, join
+from sqlalchemy import func, text, select
 from pydantic_schemas.order import OrderCreate
 from pydantic_schemas.product import Product
 
@@ -90,17 +92,25 @@ def get_orders(
 def get_revenue(
     db: Session,
     product_id: int = 0,
-    category_id: int = 0,
-    interval: str = 'annually'
+    interval: str = 'week'    # month, week, year
 ):
-    query = db.query(Order)
+
+    period = "YEAR(created_at)"
+    if interval == 'month':
+        period = "DATE_FORMAT(created_at, '%M, %Y')"
+    elif interval == 'week':
+        period = "DATE_FORMAT(created_at, 'Week %v, %b, %Y')"
+
+    product_condition = ""
     if product_id > 0:
-        query = query.where(Order.product_id == product_id)
+        product_condition = f"WHERE product_id = {product_id}"
 
-    if category_id > 0:
-        query = query.join(ProductModel).where(ProductModel.category_id == category_id)
-    
-    
+    query = text(f"SELECT {period} as period, SUM(total_amount) as revenue FROM orders {product_condition} GROUP BY period ORDER BY MIN(created_at)")
+
+    results = db.execute(query).fetchall()
 
 
-    return query.order_by(Order.created_at).offset(skip).limit(limit).all()
+    results = [{'period': row.period, 'revenue': round(row.revenue, 2)} for row in results]
+
+    return results
+

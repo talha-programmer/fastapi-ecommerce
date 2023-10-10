@@ -6,7 +6,7 @@ import fastapi
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
-from .utils.orders import get_orders
+from .utils.orders import get_orders, get_revenue
 from pydantic_schemas.order import Order, OrderCreate
 from db.db_setup import get_db
 
@@ -28,9 +28,7 @@ async def all_orders(
     return orders
 
 
-# @router.post("/products", status_code=201)
-# async def create(product: ProductCreate, db: Session = Depends(get_db)):
-#     category = get_category(db, product.category_id)
-#     if category is None:
-#         raise HTTPException(422, "Invalid category id")
-#     return create_product(db, product)
+@router.get("/revenue")
+async def revenue(interval: str = Query('year', description="Allowed values: year, month, week"), product_id: int = 0,  db: Session = Depends(get_db)):
+    revenue = get_revenue(db, interval=interval, product_id=product_id)
+    return revenue
