@@ -26,7 +26,7 @@ revenue and sales, sample data generation for testing etc.
 ### Database Schema
 1. Categories Table:
   - Stores the name of the category
-  - Has One to Many relationship with proucts
+  - Has One to Many relationship with products
    
 2. Products Table:
    - Main table for products, having information about the product such as title, price, discount, stock, category id etc.
